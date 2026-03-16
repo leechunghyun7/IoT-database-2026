@@ -1,0 +1,287 @@
+# iot-database-2026
+2026년 iot개발자 데이터 베이스 리포지 토리
+
+## 1일차
+
+### 데이터/정보/지식
+
+-`데이터` : 단순한 수치가 값
+-`정보` : 데이터의 의미를 부여한 것
+- 지식 : 정보를 통한 사물이나 현상에 대한 이해
+
+### 데이터 베이스
+- 조직에 필요한 정보를 위해서 논리적으로 연관덴 데이터를 구조적으로 통합, 저장해 놓은 것
+-`도메인`- 자기 어무에 관련된 지식
+- 기업/기관은 자기 도메인 정보만 저장
+- 보통 cs 프로그램이라고 명칭. DB쪽이 서버, 프로그램
+#### 데이터베이스 개념, 특징
+
+-통합 데이터 - `데이터 중복 최소화` , 중복으로 인한 데이터 `불일치 현상 제거`
+-저장 데이터 - 문서가 아닌 컴퓨터 저장장치에 저장. 반영구적 저장
+-운영 데이터 - 저장된 상태에서 업무를 위해 사용. 검색 수정 등
+-공용 데이터 - 여러 사람이 업무를 위해서 `공용으로 사용`
+
+#### 특징
+ 
+- 실시간 접근성 -  수 초내 결과가 리턴
+- 계속적 변화 - 추가,수정,조회,삭제가 가능
+- 동시 공유 - 여러 사용자가 동시에 공유. 같은 데이터를 사용하더라도 최대한 문제가 없게 처리
+- 내용에 따른 참조 - 물리적인 저장 데이터가 아닌 데이터 값을 참조
+
+#### DBMS
+
+- 데이터베이스를 관리하는 시스템 DataBase Management System 의 약자
+- DBMS를 데이터 벱이스, DB로 통칭
+
+#### dbms 장점
+
+- 데이터 중복최소화, 데이터 일관성, 데이터 독립성, 관리기능(백업,복구,`동시성 제어`,), 개발 생산성,
+데이터 무결성 유지 , 데이터 표준 준수 `데이터 무결성 중요`
+
+###데이터 베이스 설치
+
+#### 로컬 설치
+
+1.https://www.mysql.com/ 사이트
+2.MYSQL Community Edition 아래 링크 클릭
+3.MySQL Installer for Windows 링크 클릭
+4.MYSQL Installer 8.0.45 windows설치
+5.회원가입이나 로그인 없이 No thanks, just start my download 클릭
+6.mysql-installer-commuity-8.0.45.0msi 실행
+
+#### 도커사용 설치
+
+-Docker - dovmfflzpdltus tlsthr rncnr , xptmxm, tjqltmgkf tn dlTsms zjsxpdlsj rlqksdml rktkdghk vmffotvha
+
+- dhsfkdls tkddptj dlalwlfmf ekdnsfhdem
+-tlfgodgksms zjszxpdlsjfh aksema
+
+1.도커설치
+-https://www.docker.com/ dowmload docker window 클릭
+    ![alt text](image-1.png)
+    -close and restart로 재부팅
+    -DOcker dscription Service Agreement 창 Accept 클릭
+    -Linux 용 Windows 하위 시스템 설치 필수 `wsl --update` 실행
+    ![alt text](image.png)
+2.도커 설정
+- 설정 들어가서 start docker singn in 체크
+3.도커 콘솔 명령어
+    ``` powershell
+    >docker
+    >docker --version
+    >docker search 이미지명
+    >docker pull 이미지명
+    >docker run ...
+    ```
+3.MySQL 설치
+
+4.MySQL 설치
+    -Powershell 열기
+    -docker search 는 도커허브를 검색 기능
+
+    ```powershell
+    >docker searchmy sql
+    ```
+
+
+    --docker pull 이미지 다운
+
+    ``` powershell
+    >docker pull mysql:8.0.45
+    ```powershell
+
+    # \는 윈도우에서 사용불가, 여러줄 명령 불가능
+
+
+    ![alt text](image-2.png)
+
+    docker run -d --name mysql80 -p 3306:3306 -e MYSQL_ROOT_PASSWORD=my123456 -e MYSQL_DATABASE=mydb -e MYSQL_USER=myuser -e MYSQL_PASSWORD=my123456   -v  mysql80_data:/var/lib/mysql --restart unless-stopped mysql:8.0.45
+
+     -필요 계정
+        -root(관리자) - my123456
+        -myuser(일반사용자) -my123456
+
+
+
+     - 옵션 설명
+     - `--name mysql180` :컨테이너 이름
+     - `-p 3306: 3306` : 포트번호 컴퓨터에서 접근하는 포트 : 컨테이너 내부에서 사용하는 포트 번호
+     - `MYSQL_ROOT_PASSWORD` : MYSQL 관리자 root 계정 비밀번호 초기화
+     - `MYSQL_DATABASE`:컨테이너 시작시 자동 생성할 DB
+     - `MYSQL_USER/MYSQL_PASSWORD` : 일반 사용자 계정
+     - -v mysql80_data:/var/lib/mysql 컨테이너 내 mysql 데이터 저장위치
+     - --resatart unless - stopped : 도커 재시작시 자동 복구
+
+     -docker ps -현재 실행중인 컨테이너 확인
+
+     -docker exec - 
+
+5.MYSQL Workbench 설치
+
+    - Database 개발툴
+    - 로컬에서 다운로드한 MySQL Installer 8.0.45 설치 
+    -MySQL Connections 옆 동그라미 +
+
+    ![alt text](image-3.png)
+
+    ![alt text](image-4.png)
+
+6.DBeaver 개발툴 설치 
+
+7.Visual Studio 확장 설치
+
+- 확장 >Database rjator
+-Database Client 설치
+-연결은 다른 개발툴과 동일
+![alt text](image-5.png)
+
+도커 사용 및 설치
+
+
+### 기본이론
+#### 관계형데이터 베이스
+
+-Relational Database
+    -1969년 E.F수학 모델에 근간하여
+    -테이블을 최소단위로 구성
+    - 각 테이블간 관계를 통해서 데이터모델 근간
+#### MySQL 접속
+
+- 관리자계정 - root
+    -새 사용자 생성, 새 데이터베이스 생성, 권한 , 백업 및 복구
+- 일반계정 -mysq;
+    -해당 데이터베이스에서 데이터 처리 작업
+#### SQL
+
+-structured query languase
+-구조화된 질의 언어
+-데이터베이스에서 데이터 조작, 테이블 객체를 컨트롤하는 프로그래밍 언어
+
+-DML -대이터 조작언어 SELECT,INSERT,UPDATE,DELETE DHK RKXDMS EPDLX같은 데이터 조작 어
+-SQL 종류
+-Data Dfinition Language 데이터 정의어를 처리하는 언어
+-data control language grant revoke와 같이 사용자에게 권한 주고 해제하는 기능을 처리하는 언어
+-Transaction Control Language -트랜잭션 제어어 .BEGIN TRAN, COMMIT, ROLLBACK 같은 트랜잭션 동시성 제어를 위한 언어
+
+### SELECT 실습
+
+- DBeaver 설정
+    -환경 설정>>편집기>SQL편집기>SQL포맷
+    -KEYWORD UPPER로 변경
+
+    -- 조건 필터링 (필요한 행, 레코드)만 조회할 때
+    SELECT *|열이름 나열
+    FROM 테이블명
+    WHERE 조건...;
+
+    --정렬하고 싶을 때
+    --ASCending (오름차순)|DESCending(내림차순)
+    SELECT *|열이름 나열
+    FROM 테이블명
+    WHERE 조건...
+    ORDER BY 열1,열2 ASC|DESC;
+    ```
+
+## 2일차
+
+### 도커 사용하는 이유
+- 도커가 뭐냐? sql이나 db 환경설정을 줄여주는 도구
+- 설치 편의성 - 이미지만 있으면 컨테이너로 실행하는데 수십초밖에 안걸림. 설치가 불필요한 장점이 있음
+- 환경격차 문제 해결 - OS단의 설정까지 건드려야하는 문제를 없애고, 간단하게 서비스를 실행 가능
+- 서버비용 절감 - 새로운 서비스를 할 때마다 하드웨어 서버를 구매, 설정할 필요 없음
+- OS에 독립적 - 이미지 받아서 실행만 하면됨
+- 가상머신보다 빠름 - VMWare, Virtual Box 와 같은 가상 os 머신보다 실행속도가 빠름. 필요없는 기능과 용량 제거
+
+### AI시대 PostgreSQL 학습
+
+- DB 시장에서 Oralce, MYSQL, SQLServer 다음 PostgreSQL이 4위
+- AI 시대에 더 비중이 오름
+- 나중에 학습할 것
+
+### DBEAVER 접속설정 다시
+
+
+### select 실습
+
+- 기본문법
+
+    ```sql
+    SELECT ALL|DISTINCT 컬럼1, ...
+      FROM 테이블명 
+      WHERE 필터링조건
+      GROUP BY 그루핑 컬럼 1, 컬럼2...
+      HAVING 집계함수필터링조건//그룹바이 후 집계함
+      ORDER BY  정렬 컬럼1,컬럼2 DESC;
+    ```
+
+-WHERE 절 - 전체 데이터에서 필요한 절만 필터링
+
+    -비교 : =, <>(같지 않다),!=(Db 종류별로),<,>,>=,<=
+    -범위 : BETWEEN a AND b, 초과, `미만은 사용불가` `날짜는 조심`할 것!
+            - price BETWEEN 10000 AND 20000
+    -집합 : IN, NOT IN
+        -price IN (10000,20000,25000) -- 가격이 1만, 2만, 2만 5000에 속하는 데이터
+        -price NOT IN (10000,20000) -- 가격 1만 2만 제외한 데이터
+    -패턴 : LIKE (문자열만),%,_
+        -bookname LIKE '축구%'  -- 책 제목중 축구로 시작하는 책 모두
+    -NULL : 데이터가 없는 것, 입력되지 않은 것, =로 비교하지 X!
+    -price IS NULL, price IS NOT NULL
+    -복합 : AND(&&와 동일), OR (C++ ||), NOT (C++ !)로 비교 조합
+        -(price<20000) AND (bookname LIKE '축구의 %')
+
+    문법 정리
+    SELECT 컬럼   //조회할 열 선택
+    FROM 테이블 //어느 테이블에서 가져올지
+    WHERE 조건; //조건
+
+    SELECT bookname
+    FROM Book
+    WHERE price > 20000;// 가격이 20000보다 큰 책 이름 조회
+
+-ORDER BY - 정렬 ASC(오름차순), DESC(내림차순)
+
+-Alias - 별명으로 컬럼명, 테이블명등 원래의 이름을 바꿔쓰고 싶을때 AS 사용
+    -"쌍따옴표로 별명을 지정하는 것을 추천.(스페이스사용 등)
+
+-GROUP BY, 집계 함수 - DB를 사용하는 가장큰 목적 중 하나
+    -SUM() :총합,숫자컬럼만
+    -COUNT() :총 개수,컬럼 대신 *가능
+    -MIN() :최소값, 숫자컬럼만
+    -MAX() :최대값, 숫자컬럼만
+    -AVG() :평균값, 숫자컬럼만
+    -STD() :표준편차 나중에
+
+- HAVING - 일반 필터링은 WHERE 절로, 집계함수 필터링은 HAVING절로
+
+-GROUB BY, HAVING 주의사항
+    -GROUP BY에 포함되지 않은 컬럼은 SELECT에 사용할 수 없음!
+    -집계함수 외 일반컬럼은 SELECT와 GROUB BY를 일치 시킬 것
+    -HAVING 절에는 집걔함수 필터링 포함
+    -WHERE절에 집걔함수 사용 불가 ~
+    -외울때는 SELECT, FROM,WHERE,GROUP BY, HAVING , ORDER BY 순 기억
+
+-JOIN - 관계형 DB의 핵심 기능
+    -두개 이상의 테이블을 합쳐서 하나의 테이블처럼 보여주는 기법
+
+-JOIN 종류 - 종류는 많으나 3ㅏ지만 알면 됨
+    -INNER JOIN(내부조인) - 조인중에서 가장 간단한 조인 ./ 컬럼이 일치하는 데이터만조회
+    -OUTER JOIN(외부조인) - 한테이블 기주으로 데이터가 일치하지 않는 데이터 까지 나오도록 조회하는 조인
+
+    -LEFT OUTER JOIN - 두개의 테이블 중 앞쪽 테이블 기준
+    -RIGHT OUTER JOIN - 두개의 테이블중 뒤쪽 테이블 기준
+
+#### 서브쿼리(부속질의)
+
+- SubQuery - 쿼리 내부에 포함되는 하위쿼리. 항상 소괄호 () 내에 작성
+- 서브쿼리는 소괄호 안의 쿼리 부터 작성
+- 메인쿼리 - 소괄호 밖의 쿼리
+- 서브쿼리 - 소괄호 안의 쿼리
+
+## 3일차
+
+### SELECT 실습
+
+#### 서브쿼리 계속
+
+
+
