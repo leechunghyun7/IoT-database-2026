@@ -376,10 +376,120 @@ CREATE TABLE 테이블명(
     컬럼n이름 데이터타입 제약조건
     [각 제약조건 독립적으로 작성]
 );
--- 데이터베이스 생성
+- 데이터베이스 생성
 CREATE DATABASE 데이터베이스명;
--- 사용자 생성
+- 사용자 생성
 CREATE USER 사용자명 IDENTIFIED BY 비번;
+
+```
+
+## 4일차
+
+### MySQL 샘플DB
+
+-샘플DB
+
+- Sakila-db-MySQL 버전충돌로 현재 사용불가
+
+- INSERT INTO 대량 삽입
+
+### DML 추가
+
+- INSERT INTO 대량 삽입 - My SQL 방법
+
+```sql
+INSERT INTO 테이블명 VALUES (컬럼1값, 컬럼2값, ... 컬럼 n 값),
+(컬럼1값, 컬럼2값, ... 컬럼 n 값),
+(컬럼1값, 컬럼2값, ... 컬럼 n 값),
+...
+(컬럼1값, 컬럼2값, ... 컬럼 n 값),
+여러번복사됨
+
+### DDL 계속
+
+#### 제약조건 개요
+
+-데이터베이스에 정확한 데이터가 들어갈 수 있도록, 테이블 각 컬럼별 입력가능한 데이터를 지정하는 것
+-무결성을 벗어나는 데이터는 못들어가도록 제약(제한)을 주는 것
+-종류: `기본키(PRIMARY KEY)`,단일(UNIQUE),널허용여부
+
+
+#### CREATE 계속
+
+- CREATE 구문
+    -PRIMARY KEY (컬럼1 또는 여러개)
+    -FOREIGN KEY (custid) REFERENCES NewCustomer ON KELETE CASCAKE
+        -REFERENCES:참조하는 부모테이블과 PK컬럼
+        -ON KELETE CASCADE:무결성 유지를 위해서 부모테이블의 해당PK데이터를 삭제하면 자식 테이블도 삭제함
+        -ON DELETE SET NULL : 부모 테이블에 PK값이 삭제되면, 자식테이블의 FK값은 NULL로 변경한다
+        -ON UPDATE CASCADE | SET NULL : 수정할 때도 삭제시와 유사한 처리 가능. 수정도 가능하지만 PK 수정이 거의
+        없기 때문에 많이 사용되지 않음
+-AUTO_INCREMENT :테이블에 데이터 삽입할때 숫자타입 PK 값을 자동 증가시켜서 만들어주는 기능
+-PK 칼럼은 INSERT문에서 생략
+
+
+
+#### ALTER
+
+- ALTER
+    -객체 수정 테이블 외에서는 많이 사용안됨
+
+    ```sql
+    ALTER TABLE 테이블명
+        [ADD 속성 데이터타입]
+        [DROP COLUMN 컬럼명]
+        [MODIFY 속성명 데이터타입 ]
+        [MODIFY 속성명 [NULL|NOT NULL] ]
+        [ADD PRIMARY KEY(칼럼명) ]
+        [[ADD|DROP]제약조건명]
+    ```
+#### DROP
+
+-DROP 
+    -객체 삭제
+        -테이블에서는 관계를 맺고있는 자식테이블 먼저 삭제 후 부모테이블 삭제 가능
+
+        ```SQL
+        DROP 객체 객체명
+        ```
+
+###내장 함수
+
+- C,C++ 내장함수와 동일
+
+### NULL
+
+-- 이직 지정되지 않은 값.
+- '0','',' ' 과 다름
+- C,C++,'\O 과 동일한 의미
+- 비교연산 불가 (=,>,<,<=) 대신 IS IS NOT만 사용가능
+NULL값을 연산하면 결과도 NULL이됨
+-NULL+숫자=> NULL
+-집계함수 계산 시 NULL 포함된 행은 집계에서 빠짐(!)
+
+### 뷰
+
+### 인덱스
+
+### 트랜잭션, 동시성제어
+
+-TCL
+
+### 보안 및 관리
+
+#### 사용자
+
+-DDL일부
+
+#### 권한
+
+- DCL
+
+### MySQL 프로그래밍
+
+###C/C++MySQL연동
+### 데이터베이스 모델링
+
 
 =======
 SD
