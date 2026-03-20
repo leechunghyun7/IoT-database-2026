@@ -550,21 +550,147 @@ NULL값을 연산하면 결과도 NULL이됨
 
 ## 6일차
 
--TCL
+### 트랜잭션, 동시성제어
+
+    -Transaction Control Language 에 포함된 `START TRANSACTION`,`COMMIT`,`ROLLBACK`,`SAVEPOINT`학습
+
+#### Transaction
+
+-트랜잭션
+    -일을 처리하는 논리적인 단위 그룹
+    -여러 쿼리들이 실행되어 완성되는 하나의 논리 그룹처리 단위
+
+-계좌이체 예시
+    -A가 B에게 100만원 보낸다
+    1. A의 계좌에서 100만원 차감
+    2.B의 계좌에 100만원 추가
+    3.1번만 실해되고 2번이 실패하면 돈 사라짐
+    4.2번만실행되고 1번이 실패하면 돈이 복사
+
+    -트랜잭션 4가지 특징 (ACID)
+    -원자성 : 전부 성공 OR 전부 실패(ALL or Nothing),  중간상태 없음
+    -일관성 : 거래 전후로 데이터 규칙이 유지됨,전체 합은 변경없음
+    -격리성 : 여러사람이 동시에 처리해도 서로 영향이 없음
+    -지속성: 성공한 처리는 절대 사라지지 않음
+
+    #### DBEAER 툴 트랜잭션 선택
+- DBEAVER 기본적으로 트랜잭션을 사용못하게 되어 있음 - Auto Commit 설정 중
+
+    ![alt text](image-7.png)
+    -Manual Commit 으로 변경후 테스트
+-환경 설정>연결>연결 유형 아래 `AUTO-COMMIT BY DEFAULT` 체크해제->트랜잭션 사용모드
+
+-단 Auto-Commit을 끄면 sql에디터 마다 커밋 , 롤백
+#### 트랜잭션 쿼리
+
+```sql
+START TRANSACTION; -- 트랜잭션 로직에 진입
+동시성 제어를 하면 lock이 걸린다
+
+
+-- 여러가지 쿼리 실행
+
+COMMIT; -- 성공했으면 모두 저장! 성공 저장이랑 동일
+ROLLBACK; --실패했으면 모두 원상복구. 실패 복구
+```
+
+- 세이브 포인트
+    ```sql
+    -- 트랜잭션 중
+    SAVEPOINT sp명;
+
+    -- ... 오류가 발생시
+    ROLLBACK TO sp aud;
+
+    COMMIT;
+    ```
+#### 동시성 제어
+
+-개요
+    -여러 트랜잭션이나 프로세스가 동시에 실행될때 데이터의 일관성을 유지하면서 처리하는 것[쿼리](./day%2006/TRANSACTION.sql)
+    -Lock,Isolation Level Wvcc
+
+    -세이브 포인트 [쿼리](./day%2006/SAVEPOINT.sql)
+
+-행단위락(row lock) -일반적인 rock
+    -세션 1번이 특정 테이블의 데이터를 update나 delete시 트랜잭션을 종료하지 않으면
+    -세션 2번이 같은 테이블의 데이터를 update나 delete로 할수 없음
+
+    락걸린상태
+
+    -50초 후 락상태 해제
+
+    -서로 다른 행 데이터를 편집할 때는 락이 걸리지 않음
+-격리수준- 동시 여러 트랜잭션이 실행될때 서로의 데이터에 얼마나 영향을 줄지 제어하는 기준
+    -최하 - Read Uncomitted 커밋되지 않은 데이터 읽을 수 있음
+    -중간 - Read Committed 커밋된 데이터만 읽음
+    -기본 - Repeatable Read MySQL 기본값 같은 트랜잭션 안에서는 항상 같은 결과
+    -최고 - sserializable 순차적실행 동시성 거의 없음. 안전하지만 성능 최악
+
+-동시성 제어문제
+
+-Dirty Read-![alt text](image-8.png)
+-Non-repeatable Read - 같은 트랜잭션 안에서 같은 데이터를 두번 읽었을때 결과가 다른 현상
+-Phantom Read
+
+격리수준과 동시성 제어 정리
+-최하 커밋 되지않은 데이터
+-중간 커밋된 데이터
+-기본 트랜잭션 안에서 같은 결과
+-최고 순차적실행 동시성 X
 
 ### 보안 및 관리
 
+#### TKDYDWK
+
+-사용자 생성 및 삭제
+    -데이터베이스를 사용할 계정을 생성 쿼리
+
+    ``
+    --사용자 생성
+    CREATE USER '사용자명'@'localhost|% IDENTIFIED BY'비밀번호';
+    -- 사용자 생성 비밀번호 변경
+     CREATE USER '사용자명'@'localhost|% IDENTIFIED BY'비밀번호';
+
+    -- 사용자 삭제
+    DROP USER `사용자명`
+    ```
 #### 사용자
 
 -DDL일부
 
 #### 권한
+- 사용자에게 권한 부여 및 해제,DCL
+    -대부분 관리자가 수행
+    -GRANT,REVOKE
+
+    ```sql
+    -- 권한 부여
+    GRANT ALL PRIVILEGES ON 데이터베이스 * TO `사용자명`@`localhost|%;
+
+    -- 특정권한 부여
+    
+    --권한 해제
+    REVOKE ALL PRIVILEGES ON 데이터베이스.*FROM;
+    ```
 
 - DCL
 
+### MY SQL백업 복구
+- dump, resore
+    * sql 파일로 내보내기
+
+    ![alt text](image-9.png)
+
 ### MySQL 프로그래밍
 
+
+#### 데이터베이스 프로그래밍
+- 각 DB마다 프로그래밍 언어 상이
 ###C/C++MySQL연동
+
+### 사용자 정의 함수
+-내장함수에 없는 기능에 함수를 추가로 개발하는 것
 ### 데이터베이스 모델링
 
 
